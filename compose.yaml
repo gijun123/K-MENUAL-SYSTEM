@@ -1,0 +1,47 @@
+# 파일 설명
+# - MySQL 8.4.13 개발용 컨테이너와 데이터 보관 볼륨을 정의합니다.
+# - 실제 비밀번호 등 PC별 값은 루트의 .env 파일에서 읽습니다.
+#
+# 실행 순서 (저장소 루트의 Git Bash 또는 터미널에서 실행)
+# 1. Docker Desktop을 실행하고 엔진이 준비될 때까지 기다립니다.
+# 2. 처음 한 번 .env.example을 복사해 .env를 만들고 비밀번호를 입력합니다:
+#      cp .env.example .env
+#      notepad .env
+# 3. MySQL 컨테이너를 백그라운드에서 생성·실행합니다:
+#      docker compose up -d
+# 4. 컨테이너 실행 상태와 MySQL 준비 상태를 확인합니다:
+#      docker compose ps
+#      docker compose logs mysql
+# 5. 컨테이너 안에서 앱 계정으로 접속해 버전과 현재 DB를 확인합니다:
+#      docker compose exec mysql mysql -ukmanual_app -p kmanual_dev -e "SELECT VERSION(), DATABASE();"
+#    비밀번호 입력 프롬프트에 .env의 MYSQL_PASSWORD 값을 입력합니다.
+#    앱 계정명이나 DB 이름을 바꾸었다면 명령의 kmanual_app/kmanual_dev도 맞춰 바꿉니다.
+# 6. Windows 호스트에서 직접 접속할 때 (MySQL 클라이언트 설치 필요):
+#      mysql -h127.0.0.1 -P3307 -ukmanual_app -p kmanual_dev -e "SELECT VERSION(), DATABASE();"
+#
+# 참고: 첫 실행 때 MySQL 이미지가 없으면 자동으로 내려받습니다.
+#       테이블 스키마는 이 Compose 설정만으로 생성되지 않으며 Flyway 설정이 별도로 필요합니다.
+#       중지: docker compose stop / 다시 시작: docker compose up -d
+
+services:
+  mysql:
+    image: mysql:8.4.13
+    container_name: kmanual-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql_data:
