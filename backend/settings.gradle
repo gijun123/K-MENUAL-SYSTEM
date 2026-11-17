@@ -1,0 +1,2 @@
+// Gradle에서 사용할 백엔드 프로젝트 이름을 지정합니다.
+rootProject.name = 'kmanual-system-backend'

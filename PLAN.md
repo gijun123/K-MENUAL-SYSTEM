@@ -23,7 +23,7 @@
 | 구분 | 확정 내용 |
 |---|---|
 | 프런트엔드 | React 19.3.1, JavaScript, Node.js 24.22.2 LTS, npm, Vite 8.3.5 |
-| 백엔드 | JDK 21, Spring Boot 4.0.9, Gradle Wrapper 9.8.2 |
+| 백엔드 | JDK 21, Spring Boot 4.1.2, Gradle Wrapper 9.8.2 |
 | DB | MySQL 8.4.13 LTS, Flyway 버전별 SQL |
 | API·테스트 | Springdoc OpenAPI 3.x 기반 Swagger UI, JUnit |
 | 인증 | Spring Security, 사용자명·비밀번호, 서버 세션, BCrypt, USER·ADMIN |
