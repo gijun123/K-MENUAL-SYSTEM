@@ -5,7 +5,7 @@
 # 실행 순서 (저장소 루트의 Git Bash 또는 터미널에서 실행)
 # 1. Docker Desktop을 실행하고 엔진이 준비될 때까지 기다립니다.
 # 2. 처음 한 번 .env.example을 복사해 .env를 만들고 비밀번호를 입력합니다:
-#      cp .env.example .env
+#      cp .env .env
 #      notepad .env
 # 3. MySQL 컨테이너를 백그라운드에서 생성·실행합니다:
 #      docker compose up -d
